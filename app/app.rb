@@ -40,14 +40,15 @@ class App < Sinatra::Base
 
   post '/users' do
     user = User.create(email: params[:email],
-                       password: params[:password])
+                       password: params[:password],
+                       password_confirmation: params[:password_confirmation])
     session[:user_id] = user.id
     redirect to('/')
   end
 
   helpers do
     def current_user
-      User.get(session[:user_id]) if session[:user_id]
+      current_user ||= User.get(session[:user_id])
     end
   end
 
