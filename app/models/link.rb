@@ -7,8 +7,8 @@ class Link
 
   # these property declarations set the column headers in the Link table
   property :id,     Serial # Serial means that it will be auto-incremented for every record
-  property :title,  String
-  property :url,    String
+  property :title,  String, required: true
+  property :url,    String, required: true
 
   has n, :tags, through: Resource
 

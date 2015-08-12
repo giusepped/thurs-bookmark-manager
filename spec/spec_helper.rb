@@ -9,6 +9,7 @@ require 'capybara/rspec'
 require 'rspec'
 require './app/app.rb'
 require "database_cleaner"
+require 'factory_girl'
 
 Capybara.app = App
 
@@ -44,6 +45,10 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+  config.include FactoryGirl::Syntax::Methods
+  FactoryGirl.definition_file_paths = %w{./spec/factories}
+  FactoryGirl.find_definitions
 
   config.include Capybara::DSL
   # rspec-expectations config goes here. You can use an alternate

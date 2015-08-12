@@ -48,8 +48,10 @@ class App < Sinatra::Base
     if @user.save
       session[:user_id] = @user.id
       redirect to('/')
+    elsif params[:email].empty?
+      flash.now[:email_error] = "Please provide a valid email"
     else
-      flash.now[:notice] = "Password and confirmation password do not match"
+      flash.now[:password_error] = "Password and confirmation password do not match"
       erb :'users/new'
     end
   end
