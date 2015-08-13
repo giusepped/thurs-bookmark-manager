@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/flash'
+require 'pry'
 require_relative 'data_mapper_setup'
 
 class App < Sinatra::Base

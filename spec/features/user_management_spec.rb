@@ -10,8 +10,11 @@ feature 'User sign up and sign in' do
   # However, we are currently driving everything through
   # feature tests and we want to keep this example simple.
 
+  let(:user) do
+    build(:user)
+  end
+
   scenario 'I can sign up as a new user' do
-    user = build(:user)
     expect { sign_up(user) }.to change(User, :count).by(1)
     expect(page).to have_content('Welcome, alice@example.com')
     expect(User.first.email).to eq('alice@example.com')
@@ -32,14 +35,12 @@ feature 'User sign up and sign in' do
   end
 
   scenario 'cannot register user twice' do
-    user = build(:user)
     sign_up(user)
     expect { sign_up(user) }.not_to change(User, :count)
     expect(page).to have_content('Email is already taken')
   end
 
   scenario "with correct credentials" do
-    user = build(:user)
     sign_up(user)
     sign_in(user)
     expect(page).to have_content "Welcome, #{user.email}"
