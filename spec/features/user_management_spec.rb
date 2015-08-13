@@ -2,18 +2,11 @@ require './app/data_mapper_setup'
 
 feature 'User sign up and sign in' do
 
-  # Strictly speaking, the tests that check the UI
-  # (have_content, etc.) should be separate from the tests
-  # that check what we have in the DB since these are separate concerns
-  # and we should only test one concern at a time.
-
-  # However, we are currently driving everything through
-  # feature tests and we want to keep this example simple.
-
   let(:user) do
     build(:user)
   end
 
+context "Sign up" do
   scenario 'I can sign up as a new user' do
     expect { sign_up(user) }.to change(User, :count).by(1)
     expect(page).to have_content('Welcome, alice@example.com')
@@ -40,52 +33,28 @@ feature 'User sign up and sign in' do
     expect(page).to have_content('Email is already taken')
   end
 
-  scenario "with correct credentials" do
-    sign_up(user)
-    sign_in(user)
-    expect(page).to have_content "Welcome, #{user.email}"
+end
+
+  context "Sign in" do
+
+    scenario "with correct credentials" do
+      sign_up(user)
+      sign_in(user)
+      expect(page).to have_content "Welcome, #{user.email}"
+    end
+
   end
 
-  def sign_in(user)
-    visit '/sessions/new'
-    fill_in :email,    with: user.email
-    fill_in :password, with: user.password
-    click_button 'Sign in'
-  end
+  context "Sign out" do
 
-  def sign_up(user)
-    visit '/users/new'
+    scenario "while being signed in the user can sign out" do
+      sign_up(user)
+      sign_in(user)
+      click_button "Sign out"
+      expect(page).to have_content "You are signed out"
+    end
 
-    fill_in :email,    with: user.email
-    fill_in :password, with: user.password
-    fill_in :password_confirmation, with: user.password_confirmation
-    click_button 'Sign up'
   end
 
 end
 
-# feature "User sign in" do
-
-#   scenario "with correct credentials" do
-#     user = build(:user)
-#     sign_up(user)
-#     sign_in(user)
-#     expect(page).to have_content "Welcome, #{user.email}"
-#   end
-
-#   def sign_in(user)
-#     visit '/sessions/new'
-#     fill_in :email,    with: user.email
-#     fill_in :password, with: user.password
-#     click_button 'Sign in'
-#   end
-
-#   def sign_up(user)
-#     visit '/users/new'
-
-#     fill_in :email,    with: user.email
-#     fill_in :password, with: user.password
-#     fill_in :password_confirmation, with: user.password_confirmation
-#     click_button 'Sign up'
-#   end
-# end

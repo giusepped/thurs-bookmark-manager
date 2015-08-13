@@ -10,6 +10,7 @@ require 'rspec'
 require './app/app.rb'
 require "database_cleaner"
 require 'factory_girl'
+require_relative 'helpers/session'
 
 Capybara.app = App
 
@@ -32,6 +33,8 @@ Capybara.app = App
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+
+  config.include SessionHelpers
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction

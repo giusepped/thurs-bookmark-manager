@@ -1,12 +1,12 @@
 require 'sinatra/base'
 require 'sinatra/flash'
-require 'pry'
 require_relative 'data_mapper_setup'
 
 class App < Sinatra::Base
   enable :sessions
   register Sinatra::Flash
   set :session_secret, 'super secret'
+  use Rack::MethodOverride
 
   get '/' do
     erb :root
@@ -68,6 +68,13 @@ class App < Sinatra::Base
       erb :'sessions/new'
     end
   end
+
+  delete '/sessions' do
+    session.clear
+    flash[:notice] = "You are signed out"
+    redirect '/'
+  end
+
 
   helpers do
     def current_user
