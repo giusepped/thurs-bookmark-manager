@@ -1,6 +1,6 @@
 require './app/data_mapper_setup'
 
-feature 'User sign up' do
+feature 'User sign up and sign in' do
 
   # Strictly speaking, the tests that check the UI
   # (have_content, etc.) should be separate from the tests
@@ -38,6 +38,20 @@ feature 'User sign up' do
     expect(page).to have_content('Email is already taken')
   end
 
+  scenario "with correct credentials" do
+    user = build(:user)
+    sign_up(user)
+    sign_in(user)
+    expect(page).to have_content "Welcome, #{user.email}"
+  end
+
+  def sign_in(user)
+    visit '/sessions/new'
+    fill_in :email,    with: user.email
+    fill_in :password, with: user.password
+    click_button 'Sign in'
+  end
+
   def sign_up(user)
     visit '/users/new'
 
@@ -49,18 +63,28 @@ feature 'User sign up' do
 
 end
 
-feature "User sign in" do
+# feature "User sign in" do
 
-  scenario "with correct credentials" do
-    user = build(:user)
-    sign_in(user)
-    expect(page).to have_content "Welcome, #{user.email}"
-  end
+#   scenario "with correct credentials" do
+#     user = build(:user)
+#     sign_up(user)
+#     sign_in(user)
+#     expect(page).to have_content "Welcome, #{user.email}"
+#   end
 
-  def sign_in(user)
-    visit '/sessions/new'
-    fill_in :email,    with: user.email
-    fill_in :password, with: user.password
-    click_button 'Sign in'
-  end
-end
+#   def sign_in(user)
+#     visit '/sessions/new'
+#     fill_in :email,    with: user.email
+#     fill_in :password, with: user.password
+#     click_button 'Sign in'
+#   end
+
+#   def sign_up(user)
+#     visit '/users/new'
+
+#     fill_in :email,    with: user.email
+#     fill_in :password, with: user.password
+#     fill_in :password_confirmation, with: user.password_confirmation
+#     click_button 'Sign up'
+#   end
+# end
