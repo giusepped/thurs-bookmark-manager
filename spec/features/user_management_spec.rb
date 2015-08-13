@@ -10,7 +10,6 @@ feature 'User sign up' do
   # However, we are currently driving everything through
   # feature tests and we want to keep this example simple.
 
-
   scenario 'I can sign up as a new user' do
     user = build(:user)
     expect { sign_up(user) }.to change(User, :count).by(1)
@@ -48,4 +47,20 @@ feature 'User sign up' do
     click_button 'Sign up'
   end
 
+end
+
+feature "User sign in" do
+
+  scenario "with correct credentials" do
+    user = build(:user)
+    sign_in(user)
+    expect(page).to have_content "Welcome, #{user.email}"
+  end
+
+  def sign_in(user)
+    visit '/sessions/new'
+    fill_in :email,    with: user.email
+    fill_in :password, with: user.password
+    click_button 'Sign in'
+  end
 end
