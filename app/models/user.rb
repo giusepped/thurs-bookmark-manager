@@ -13,7 +13,8 @@ class User
 
   property :password_digest, Text
 
-  validates_presence_of :email
+  validates_presence_of :email, :message => 'Email cannot be empty'
+  validates_uniqueness_of :email
 
   def password=(password)
     @password = password

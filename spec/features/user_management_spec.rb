@@ -22,14 +22,21 @@ feature 'User sign up' do
     user = build(:user, password_confirmation: "wrong")
     expect { sign_up(user) }.not_to change(User, :count)
     expect(current_path).to eq('/users')
-    expect(page).to have_content('Password and confirmation password do not match')
+    expect(page).to have_content('Password does not match the confirmation')
   end
 
   scenario 'requires email not to be empty' do
     user = build(:user, email: "")
     expect { sign_up(user) }.not_to change(User, :count)
     expect(current_path).to eq('/users')
-    expect(page).to have_content('Please provide a valid email')
+    expect(page).to have_content('Email cannot be empty')
+  end
+
+  scenario 'cannot register user twice' do
+    user = build(:user)
+    sign_up(user)
+    expect { sign_up(user) }.not_to change(User, :count)
+    expect(page).to have_content('Email is already taken')
   end
 
   def sign_up(user)
@@ -39,10 +46,6 @@ feature 'User sign up' do
     fill_in :password, with: user.password
     fill_in :password_confirmation, with: user.password_confirmation
     click_button 'Sign up'
-  end
-
-  def user_params
-
   end
 
 end

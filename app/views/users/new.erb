@@ -7,10 +7,3 @@
   <input type='submit' value='Sign up'>
 </form>
 
-<% if flash[:password_error] %>
-  <div id="notice"> <%= flash[:password_error] %> </div>
-<% end %>
-
-<% if flash[:email_error] %>
-  <div id="notice"> <%= flash[:email_error] %> </div>
-<% end %>
