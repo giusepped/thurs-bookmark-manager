@@ -27,8 +27,6 @@ module Armadillo
         @links = tag ? tag.links : []
         erb :index
       end
-
     end
   end
-
 end

@@ -9,9 +9,9 @@ module Armadillo
     use Routes::Links
     use Routes::Users
     use Routes::Sessions
+    # use Models::Link
 
     # start the server if ruby file executed directly
     run! if app_file == $0
   end
-
 end
