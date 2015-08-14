@@ -1,5 +1,3 @@
-require_relative './base'
-
 module Armadillo
   module Routes
     class Sessions < Base
